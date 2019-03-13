@@ -1,12 +1,13 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
+import AccountDropdown from './../layout/AccountDropdown'
 
 import './Header.scss'
 
 const authenticatedOptions = (
   <React.Fragment>
-    <Link to="/change-password">Change Password</Link>
-    <Link to="/sign-out">Sign Out</Link>
+    <AccountDropdown />
+    <Link to="/dashboard">Home</Link>
   </React.Fragment>
 )
 
@@ -17,21 +18,12 @@ const unauthenticatedOptions = (
   </React.Fragment>
 )
 
-const alwaysOptions = (
-  <React.Fragment>
-    <Link to="/">Home</Link>
-  </React.Fragment>
-)
-
 const Header = ({ user }) => (
-  <header className="main-header">
-    <h1>Uber, But For Taxis</h1>
-    <nav>
-      { user && <span>Welcome, {user.email}</span>}
-      { user ? authenticatedOptions : unauthenticatedOptions }
-      { alwaysOptions }
-    </nav>
-  </header>
+  <nav className="navbar navbar-dark fixed-top bg-dark flex-md-nowrap p-0 shadow">
+    <Link className="navbar-brand col-sm-3 col-md-4 mr-0" to='/dashboard'>TradeStation</Link>
+    { user && <span className="text-white">Welcome, {user.email}</span> }
+    { user ? authenticatedOptions : unauthenticatedOptions }
+  </nav>
 )
 
 export default Header

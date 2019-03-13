@@ -9,6 +9,8 @@ import SignIn from './auth/components/SignIn'
 import SignOut from './auth/components/SignOut'
 import ChangePassword from './auth/components/ChangePassword'
 
+import Dashboard from './layout/Dashboard'
+
 import Alert from 'react-bootstrap/Alert'
 
 class App extends Component {
@@ -36,18 +38,24 @@ class App extends Component {
       <React.Fragment>
         <Header user={user} />
         {alerts.map((alert, index) => (
-          <Alert key={index} dismissible variant={alert.type}>
+          <Alert className="mt-5 ml-4 w-50" key={index} dismissible variant={alert.type}>
             <Alert.Heading>
               {alert.message}
             </Alert.Heading>
           </Alert>
         ))}
         <main className="container">
+          <Route exact path='/' render={() => (
+            <h1 className="my-5">Welcome to your TradeStation</h1>
+          )} />
+          <Route path='/dashboard' render={() => (
+            <Dashboard user={user} />
+          )} />
           <Route path='/sign-up' render={() => (
             <SignUp alert={this.alert} setUser={this.setUser} />
           )} />
           <Route path='/sign-in' render={() => (
-            <SignIn alert={this.alert} setUser={this.setUser} />
+            <SignIn setUser={this.setUser} />
           )} />
           <AuthenticatedRoute user={user} path='/sign-out' render={() => (
             <SignOut alert={this.alert} clearUser={this.clearUser} user={user} />

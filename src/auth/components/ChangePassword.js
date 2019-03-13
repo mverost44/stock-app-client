@@ -25,7 +25,7 @@ class ChangePassword extends Component {
 
     changePassword(this.state, user)
       .then(() => alert(messages.changePasswordSuccess, 'success'))
-      .then(() => history.push('/'))
+      .then(() => history.push('/dashboard'))
       .catch(error => {
         console.error(error)
         this.setState({ oldPassword: '', newPassword: '' })
