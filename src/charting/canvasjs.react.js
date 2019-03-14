@@ -1,3 +1,4 @@
+/* eslint-disable */
 import React, { Component } from 'react'
 let CanvasJS = require('./canvasjs.min')
 CanvasJS = CanvasJS.Chart ? CanvasJS : window.CanvasJS

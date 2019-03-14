@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom'
 
 const AccountDropdown = () => (
   <Fragment>
-    <DropdownButton id="dropdown-basic-button" title="Account">
+    <DropdownButton className="pr-2" title="Account">
       <Dropdown.Item><Link to="/sign-out">Sign Out</Link></Dropdown.Item>
       <Dropdown.Item><Link to="/change-password">Change Password</Link></Dropdown.Item>
     </DropdownButton>

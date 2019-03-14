@@ -1,18 +1,28 @@
 import React, { Component, Fragment } from 'react'
-import TradeForm from './TradeForm'
+import MakeTrade from './MakeTrade'
+import UpdateTrade from './UpdateTrade'
+import { Route } from 'react-router-dom'
 
 class TradeStation extends Component {
-  constructor () {
-    super()
+  constructor (props) {
+    super(props)
     this.state = {
-      // code
+      trade: {
+        ticker_symbol: '',
+        entry_price: '',
+        exit_price: '',
+        entry_size: '',
+        exit_size: '',
+        open: ''
+      }
     }
   }
 
   render () {
     return (
       <Fragment>
-        <TradeForm />
+        <Route exact path='/dashboard' render={() => <MakeTrade user={this.props.user} />}/>
+        <Route exact path='/dashboard/update-trade' render={() => <UpdateTrade user={this.props.user} />}/>
       </Fragment>
     )
   }

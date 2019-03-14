@@ -7,20 +7,19 @@ import './Header.scss'
 const authenticatedOptions = (
   <React.Fragment>
     <AccountDropdown />
-    <Link to="/dashboard">Home</Link>
   </React.Fragment>
 )
 
 const unauthenticatedOptions = (
   <React.Fragment>
     <Link to="/sign-up">Sign Up</Link>
-    <Link to="/sign-in">Sign In</Link>
+    <Link className="mr-3" to="/sign-in">Sign In</Link>
   </React.Fragment>
 )
 
 const Header = ({ user }) => (
   <nav className="navbar navbar-dark fixed-top bg-dark flex-md-nowrap p-0 shadow">
-    <Link className="navbar-brand col-sm-3 col-md-4 mr-0" to='/dashboard'>TradeStation</Link>
+    <Link className="navbar-brand col-sm-3 col-md-4 mr-0" to='/dashboard'><span className="lead">TradeStation</span> { user && <span className="pl-4">Account Balance: <span className="text-success">${user.account_balance}</span></span> }</Link>
     { user && <span className="text-white">Welcome, {user.email}</span> }
     { user ? authenticatedOptions : unauthenticatedOptions }
   </nav>
