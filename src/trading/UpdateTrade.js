@@ -12,7 +12,7 @@ class UpdateTrade extends Component {
     this.state = {
       symbol: this.props.location.state,
       id: this.props.location.id,
-      exit_price: null,
+      exit_price: '',
       size: '',
       action: 'Sell',
       closedTrades: [],
@@ -29,6 +29,7 @@ class UpdateTrade extends Component {
 
     updateTrade(user, exit_price, size, id)
       .then(response => this.setState({ closedTrades: [response.data.trade, ...this.state.closedTrades] }))
+      .then(this.setState({ size: '' }))
       .catch(console.error)
   }
   // .then(response => <OpenTrades user={this.props.user} trades={response.data.trade}/>)
