@@ -3,7 +3,7 @@ import apiConfig from './../apiConfig'
 
 // eslint-disable-next-line
 export const createTrade = (user, ticker_symbol, entry_price, entry_size) => {
-  axios({
+  return axios({
     method: 'post',
     url: `${apiConfig}/trades`,
     headers: {
@@ -20,10 +20,10 @@ export const createTrade = (user, ticker_symbol, entry_price, entry_size) => {
 }
 
 // eslint-disable-next-line
-export const updateTrade = (user, symbol, exit_price, exit_size,) => {
-  axios({
+export const updateTrade = (user, exit_price, exit_size, id) => {
+  return axios({
     method: 'patch',
-    url: `${apiConfig}/trades/${symbol}`,
+    url: `${apiConfig}/trades/${id}`,
     headers: {
       'Authorization': `Token token=${user.token}`
     },
@@ -32,6 +32,26 @@ export const updateTrade = (user, symbol, exit_price, exit_size,) => {
         exit_price: exit_price,
         exit_size: exit_size
       }
+    }
+  })
+}
+
+export const deleteATrade = (id, user) => {
+  return axios({
+    url: `${apiConfig}/trades/${id}`,
+    method: 'delete',
+    headers: {
+      'Authorization': `Token token=${user.token}`
+    }
+  })
+}
+
+export const getClosedTrades = (user) => {
+  return axios({
+    url: apiConfig + '/closed-trades',
+    method: 'get',
+    headers: {
+      'Authorization': `Token token=${user.token}`
     }
   })
 }

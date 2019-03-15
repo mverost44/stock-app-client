@@ -8,6 +8,7 @@ const AccountDropdown = () => (
     <DropdownButton className="pr-2" title="Account">
       <Dropdown.Item><Link to="/sign-out">Sign Out</Link></Dropdown.Item>
       <Dropdown.Item><Link to="/change-password">Change Password</Link></Dropdown.Item>
+      <Dropdown.Item><Link to="/dashboard">Home</Link></Dropdown.Item>
     </DropdownButton>
   </Fragment>
 )

@@ -19,7 +19,7 @@ const unauthenticatedOptions = (
 
 const Header = ({ user }) => (
   <nav className="navbar navbar-dark fixed-top bg-dark flex-md-nowrap p-0 shadow">
-    <Link className="navbar-brand col-sm-3 col-md-4 mr-0" to='/dashboard'><span className="lead">TradeStation</span> { user && <span className="pl-4">Account Balance: <span className="text-success">${user.account_balance}</span></span> }</Link>
+    <div className="navbar-brand col-sm-3 col-md-4 mr-0" to='/dashboard'><span className="lead">TradeStation</span> { user && <span className="pl-4">Account Balance: <span className="text-success">${user.account_balance}</span></span> }</div>
     { user && <span className="text-white">Welcome, {user.email}</span> }
     { user ? authenticatedOptions : unauthenticatedOptions }
   </nav>

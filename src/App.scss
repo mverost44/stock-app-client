@@ -8,7 +8,6 @@ $charcoal: #ccc;
 .flash-error {
   border: 1px solid $charcoal;
   display: block;
-  left: 25%;
   padding: 30px;
   position: fixed;
   text-align: center;
@@ -45,4 +44,10 @@ $charcoal: #ccc;
     align-self: flex-end;
     max-width: 200px;
   }
+}
+
+.home {
+  width: 100vw;
+  height: 95vh;
+  margin-right: 5vw;
 }

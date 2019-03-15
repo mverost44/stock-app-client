@@ -46,7 +46,7 @@ class App extends Component {
         ))}
         <main className="container">
           <Route exact path='/' render={() => (
-            <h1 className="my-5">Welcome to your TradeStation</h1>
+            <p>Welcome to TradeStation!</p>
           )} />
           <Route path='/dashboard' render={() => (
             <Dashboard user={user} />
@@ -55,7 +55,7 @@ class App extends Component {
             <SignUp alert={this.alert} setUser={this.setUser} />
           )} />
           <Route path='/sign-in' render={() => (
-            <SignIn setUser={this.setUser} />
+            <SignIn setUser={this.setUser} alert={this.alert} />
           )} />
           <AuthenticatedRoute user={user} path='/sign-out' render={() => (
             <SignOut alert={this.alert} clearUser={this.clearUser} user={user} />
