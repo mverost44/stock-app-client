@@ -29,6 +29,7 @@ class MakeTrade extends Component {
     createTrade(user, ticker_symbol, entry_price, size)
       .then(response => this.setState({ openTrades: [response.data.trade, ...this.state.openTrades] }))
       .then(this.setState({ size: '', ticker_symbol: '' }))
+      .then(console.log('did it'))
       .catch(console.error)
   }
 
@@ -69,6 +70,8 @@ class MakeTrade extends Component {
           handleChange={this.handleChange}
           handleSubmit={this.handleSubmit}
           confirmSymbol={this.confirmSymbol}
+          shareSize={this.state.size}
+          symbol={this.state.ticker_symbol}
         />
         {this.state.openTrades.map(trade => (
           <OpenTrades

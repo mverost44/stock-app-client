@@ -78,6 +78,7 @@ class UpdateTrade extends Component {
           handleChange={this.handleChange}
           handleSubmit={this.handleSubmit}
           confirmSymbol={this.confirmSymbol}
+          size={this.state.size}
         />
         {this.state.closedTrades.map(trade => (
           <ClosedTrades
