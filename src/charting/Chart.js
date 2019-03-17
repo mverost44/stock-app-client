@@ -98,7 +98,7 @@ render () {
 
   return (
     <div>
-      <Form.Label>Symbol</Form.Label>
+      <Form.Label>Search Stocks</Form.Label>
       <InputGroup className="mb-3">
         <FormControl
           placeholder="Symbol"

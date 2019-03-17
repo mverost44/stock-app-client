@@ -16,10 +16,10 @@ const unauthenticatedOptions = (
     <Link className="mr-3" to="/sign-in">Sign In</Link>
   </React.Fragment>
 )
-
+// { user && <span className="pl-4">Account Balance: <span className="text-success">${user.account_balance}</span></span> }
 const Header = ({ user }) => (
   <nav className="navbar navbar-dark fixed-top bg-dark flex-md-nowrap p-0 shadow">
-    <div className="navbar-brand col-sm-3 col-md-4 mr-0" to='/dashboard'><span className="lead">TradeStation</span> { user && <span className="pl-4">Account Balance: <span className="text-success">${user.account_balance}</span></span> }</div>
+    <div className="navbar-brand col-sm-3 col-md-4 mr-0" to='/dashboard'><span className="lead">TradeStation</span></div>
     { user && <span className="text-white">Welcome, {user.email}</span> }
     { user ? authenticatedOptions : unauthenticatedOptions }
   </nav>

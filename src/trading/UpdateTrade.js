@@ -12,9 +12,11 @@ class UpdateTrade extends Component {
     this.state = {
       symbol: this.props.location.state,
       id: this.props.location.id,
-      exit_price: '',
+      exitPrice: null,
+      maxSize: this.props.location.entrySize,
       size: '',
       action: 'Sell',
+      company: '',
       closedTrades: [],
       shouldRedirect: false
     }
@@ -24,15 +26,18 @@ class UpdateTrade extends Component {
     event.preventDefault()
 
     // eslint-disable-next-line
-    const { exit_price, size, id } = this.state
+    const { exitPrice, size, id } = this.state
     const { user } = this.props
 
-    updateTrade(user, exit_price, size, id)
-      .then(response => this.setState({ closedTrades: [response.data.trade, ...this.state.closedTrades] }))
-      .then(this.setState({ size: '' }))
-      .catch(console.error)
+    if (!size || !exitPrice) {
+      return ''
+    } else {
+      updateTrade(user, exitPrice, size, id)
+        .then(response => this.setState({ closedTrades: [response.data.trade, ...this.state.closedTrades] }))
+        .then(this.setState({ size: '', exitPrice: null }))
+        .catch(console.error)
+    }
   }
-  // .then(response => <OpenTrades user={this.props.user} trades={response.data.trade}/>)
 
   handleChange = event => {
     const updatedField = { [event.target.name]: event.target.value }
@@ -47,7 +52,7 @@ class UpdateTrade extends Component {
       .then(function (response) {
         return response.json()
       })
-      .then(data => this.setState({ exit_price: data.latestPrice }))
+      .then(data => this.setState({ exitPrice: data.latestPrice, company: data.companyName }))
       .catch(console.error)
   }
 
@@ -78,7 +83,10 @@ class UpdateTrade extends Component {
           handleChange={this.handleChange}
           handleSubmit={this.handleSubmit}
           confirmSymbol={this.confirmSymbol}
+          company={this.state.company}
+          exitPrice={this.state.exitPrice}
           size={this.state.size}
+          maxSize={this.state.maxSize}
         />
         {this.state.closedTrades.map(trade => (
           <ClosedTrades

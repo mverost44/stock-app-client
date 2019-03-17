@@ -11,10 +11,11 @@ class MakeTrade extends Component {
 
     this.state = {
       ticker_symbol: '',
-      entry_price: null,
-      size: '',
+      entryPrice: null,
+      size: 0,
       open: '',
       action: 'Buy',
+      company: null,
       openTrades: []
     }
   }
@@ -23,13 +24,17 @@ class MakeTrade extends Component {
     event.preventDefault()
 
     // eslint-disable-next-line
-    const { ticker_symbol, entry_price, size } = this.state
+    const { ticker_symbol, entryPrice, size } = this.state
     const { user } = this.props
 
-    createTrade(user, ticker_symbol, entry_price, size)
-      .then(response => this.setState({ openTrades: [response.data.trade, ...this.state.openTrades] }))
-      .then(this.setState({ size: '', ticker_symbol: '' }))
-      .catch(console.error)
+    if (!size || !entryPrice) {
+      return ''
+    } else {
+      createTrade(user, ticker_symbol, entryPrice, size)
+        .then(response => this.setState({ openTrades: [response.data.trade, ...this.state.openTrades] }))
+        .then(this.setState({ size: '', ticker_symbol: '', company: null, entryPrice: null }))
+        .catch(console.error)
+    }
   }
 
   handleChange = event => {
@@ -45,7 +50,7 @@ class MakeTrade extends Component {
       .then(function (response) {
         return response.json()
       })
-      .then(data => this.setState({ entry_price: data.latestPrice }))
+      .then(data => this.setState({ entryPrice: data.latestPrice, company: data.companyName }))
       .catch(console.error)
   }
 
@@ -71,6 +76,8 @@ class MakeTrade extends Component {
           confirmSymbol={this.confirmSymbol}
           shareSize={this.state.size}
           symbol={this.state.ticker_symbol}
+          companyName={this.state.company}
+          entryPrice={this.state.entryPrice}
         />
         {this.state.openTrades.map(trade => (
           <OpenTrades

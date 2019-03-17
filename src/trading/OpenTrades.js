@@ -19,11 +19,11 @@ class OpenTrades extends Component {
           <div className="card-header">Open Trade</div>
           <div className="card-body">
             <p className="lead">{symbol}</p>
-            <p className="card-text">Entry Price {entryPrice}</p>
-            <p className="card-text">Share Size {entrySize}</p>
+            <p className="card-text">Entry Price: {entryPrice}</p>
+            <p className="card-text">Share Size: {entrySize}</p>
           </div>
           <div className="card-footer">
-            <Link to={{ pathname: '/dashboard/update-trade', state: symbol, id }}><button className="btn btn-primary">Trade</button></Link>
+            <Link to={{ pathname: '/dashboard/update-trade', state: symbol, id, entrySize }}><button className="btn btn-primary">Trade</button></Link>
           </div>
         </div>
       </Fragment>
