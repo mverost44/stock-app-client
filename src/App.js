@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+
 import './App.scss'
 import { Route } from 'react-router-dom'
 
@@ -8,9 +9,7 @@ import SignUp from './auth/components/SignUp'
 import SignIn from './auth/components/SignIn'
 import SignOut from './auth/components/SignOut'
 import ChangePassword from './auth/components/ChangePassword'
-
 import Dashboard from './layout/Dashboard'
-
 import Alert from 'react-bootstrap/Alert'
 
 class App extends Component {
@@ -46,7 +45,7 @@ class App extends Component {
         ))}
         <main className="container">
           <Route exact path='/' render={() => (
-            <p>Welcome to TradeStation!</p>
+            <div></div>
           )} />
           <Route path='/dashboard' render={() => (
             <Dashboard user={user} />

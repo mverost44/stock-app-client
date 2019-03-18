@@ -30,7 +30,6 @@ class SignUp extends Component {
       .then(() => signIn(this.state))
       .then(res => setUser(res.data.user))
       .then(this.setState({ spinner: false }))
-      .then(() => alert(messages.signUpSuccess, 'success'))
       .then(() => history.push('/dashboard'))
       .catch(error => {
         console.error(error)
