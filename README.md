@@ -45,4 +45,6 @@ Client: https://github.com/mverost44/stock-app-client
 3. Change the homepage url in paackage.json to your project name
 4. You can use `npm start` to view on localhost!
 
-[Imgur](https://i.imgur.com/T44SqwJ.png)
+## Screenshot of TradeStation Interface
+
+[Click Me!](https://i.imgur.com/T44SqwJ.png)
