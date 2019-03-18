@@ -10,7 +10,8 @@ class SignIn extends Component {
 
     this.state = {
       email: '',
-      password: ''
+      password: '',
+      spinner: false
     }
   }
 
@@ -20,25 +21,33 @@ class SignIn extends Component {
 
   onSignIn = event => {
     event.preventDefault()
+    this.setState({ spinner: true })
 
     const { alert, history, setUser } = this.props
 
     signIn(this.state)
       .then(res => setUser(res.data.user))
+      .then(this.setState({ spinner: false }))
       .then(() => history.push('/dashboard'))
       .catch(error => {
         console.error(error)
-        this.setState({ email: '', password: '' })
+        this.setState({ email: '', password: '', spinner: false })
         alert(messages.signInFailure, 'danger')
       })
   }
 
   render () {
-    const { email, password } = this.state
+    const { email, password, spinner } = this.state
+
+    const spin = (
+      <div className="spinner-grow text-success ml-3" role="status">
+        <span className="sr-only">Loading...</span>
+      </div>
+    )
 
     return (
       <form className='auth-form' onSubmit={this.onSignIn}>
-        <h3>Sign In</h3>
+        <h3>Sign In {spinner ? spin : ''}</h3>
         <label htmlFor="email">Email</label>
         <input
           required

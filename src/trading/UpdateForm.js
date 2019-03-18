@@ -18,7 +18,7 @@ class TradeForm extends Component {
     )
 
     return (
-      <Form className="mx-3 mt-2">
+      <Form className="mx-3 my-3">
         <Form.Label>Symbol</Form.Label>
         <InputGroup className="mb-3">
           <InputGroup.Prepend>

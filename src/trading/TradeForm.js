@@ -18,13 +18,13 @@ class TradeForm extends Component {
     )
 
     return (
-      <Form className="mx-3 mt-2">
+      <Form className="mx-3 my-3">
         <Form.Label>Symbol</Form.Label>
         <Form.Label><span className="text-muted ml-2">Must Confirm Symbol in order to make a trade.</span></Form.Label>
         <InputGroup className="mb-3">
           <FormControl
             placeholder="Symbol"
-            name="ticker_symbol"
+            name="tickerSymbol"
             onChange={handleChange}
             value={symbol}
             required

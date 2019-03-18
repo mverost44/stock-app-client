@@ -13,6 +13,7 @@ class OpenTrades extends Component {
   }
   render () {
     const { entryPrice, entrySize, symbol, id } = this.state
+
     return (
       <Fragment>
         <div className="card mx-2 mt-3">

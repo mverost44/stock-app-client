@@ -1,6 +1,7 @@
 import React, { Component, Fragment } from 'react'
+
 import UpdateForm from './UpdateForm'
-import { deleteATrade, updateTrade, getClosedTrades } from './api'
+import { updateTrade } from './api'
 import { withRouter } from 'react-router-dom'
 import { Redirect } from 'react-router'
 import ClosedTrades from './ClosedTrades'
@@ -17,8 +18,8 @@ class UpdateTrade extends Component {
       size: '',
       action: 'Sell',
       company: '',
-      closedTrades: [],
-      shouldRedirect: false
+      shouldRedirect: false,
+      spinner: false
     }
   }
 
@@ -33,9 +34,10 @@ class UpdateTrade extends Component {
       return ''
     } else {
       updateTrade(user, exitPrice, size, id)
-        .then(response => this.setState({ closedTrades: [response.data.trade, ...this.state.closedTrades] }))
-        .then(this.setState({ size: '', exitPrice: null }))
-        .catch(console.error)
+        .then(response => this.setState({ updatedTrade: response.trade }))
+        .then(() => this.setState({ size: '', exitPrice: null }))
+        .then(() => this.setState({ shouldRedirect: true }))
+        .catch(console.error, this.setState({ size: '', exitPrice: null }))
     }
   }
 
@@ -56,24 +58,9 @@ class UpdateTrade extends Component {
       .catch(console.error)
   }
 
-  deleteTrade = (id) => {
-    const { user } = this.props
-    deleteATrade(id, user)
-      .then(response => getClosedTrades(user))
-      .then(response => this.setState({ closedTrades: response.data.trades }))
-      .catch(() => this.setState({ shouldRedirect: true }))
-  }
-
-  componentDidMount () {
-    const { user } = this.props
-    getClosedTrades(user)
-      .then(response => this.setState({ closedTrades: response.data.trades }))
-      .catch(console.error)
-  }
-
   render () {
     if (this.state.shouldRedirect) {
-      return <Redirect to='/dashboard' />
+      return <Redirect to={{ pathname: '/dashboard/closed-trades', props: { updated: true } }} />
     }
 
     return (
@@ -88,17 +75,7 @@ class UpdateTrade extends Component {
           size={this.state.size}
           maxSize={this.state.maxSize}
         />
-        {this.state.closedTrades.map(trade => (
-          <ClosedTrades
-            key={trade.id}
-            id={trade.id}
-            symbol={trade.ticker_symbol}
-            entryPrice={trade.entry_price}
-            exitPrice={trade.exit_price}
-            profitLoss={trade.total_profit_loss}
-            deleteTrade={this.deleteTrade}
-          />
-        ))}
+        <ClosedTrades user={this.props.user} />
       </Fragment>
     )
   }
