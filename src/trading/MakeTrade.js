@@ -14,7 +14,7 @@ class MakeTrade extends Component {
     this.state = {
       tickerSymbol: '',
       entryPrice: null,
-      size: 0,
+      size: 1,
       action: 'Buy',
       company: null,
       openTrades: [],
@@ -46,6 +46,18 @@ class MakeTrade extends Component {
   handleChange = event => {
     const updatedField = { [event.target.name]: event.target.value }
     this.setState(updatedField)
+  }
+
+  // check if action is buy or short to set size as positive or negative
+  handleActionChange = event => {
+    const { size } = this.state
+    this.handleChange(event)
+
+    this.setState(function () {
+      return {
+        size: -size
+      }
+    })
   }
 
   // GET current stock price from IEX API. Necessary to create a trade.
@@ -81,6 +93,7 @@ class MakeTrade extends Component {
 
   render () {
     const { openTrades, size, tickerSymbol, company, entryPrice, spinner } = this.state
+
     // Loading Spinner
     const spin = (
       <div className="spinner-grow text-success ml-3" role="status">
@@ -91,16 +104,18 @@ class MakeTrade extends Component {
     const tradeHeading = (
       <Fragment>
         <hr className="mx-4 mt-2"/>
-        <h2 className="my-3 mx-3 display">Open Trades</h2>
+        <div className="mt-3 mx-3 d-flex justify-content-between">
+          <span className="display h2">Open Trades</span>
+          <Link className="align-self-center" to='/dashboard/closed-trades'>
+            See Closed Trades
+          </Link>
+        </div>
       </Fragment>
     )
     // Message if there are no current open trades
     const noTrades = (
       <div className="mt-3 mx-3">
         <p className="lead">You don&apos;t have any open trades</p>
-        <Link className="mt-2" to='/dashboard/closed-trades'>
-          See Closed Trades
-        </Link>
       </div>
     )
     // List of open trades
@@ -124,6 +139,7 @@ class MakeTrade extends Component {
           handleChange={this.handleChange}
           handleSubmit={this.handleSubmit}
           confirmSymbol={this.confirmSymbol}
+          handleActionChange={this.handleActionChange}
           shareSize={size}
           symbol={tickerSymbol}
           companyName={company}

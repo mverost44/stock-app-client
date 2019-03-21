@@ -6,14 +6,6 @@ import Chart from './../charting/Chart'
 import './Dashboard.scss'
 
 class Dashboard extends Component {
-  constructor (props) {
-    super(props)
-
-    this.state = {
-      // code
-    }
-  }
-
   render () {
     return (
       <Fragment>

@@ -6,7 +6,7 @@ import Button from 'react-bootstrap/Button'
 
 class TradeForm extends Component {
   render () {
-    const { handleChange, handleSubmit, confirmSymbol, shareSize, symbol, entryPrice, companyName } = this.props
+    const { handleChange, handleSubmit, confirmSymbol, shareSize, symbol, entryPrice, companyName, handleActionChange } = this.props
 
     const confirmed = (
       <InputGroup>
@@ -42,7 +42,7 @@ class TradeForm extends Component {
         <Form.Row>
           <Form.Group as={Col} className="mr-2">
             <Form.Label>Action</Form.Label>
-            <Form.Control onChange={handleChange} name="action" as="select">
+            <Form.Control onChange={handleActionChange} name="action" as="select">
               <option>Buy</option>
               <option>Short</option>
             </Form.Control>

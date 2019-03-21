@@ -47,7 +47,7 @@ class App extends Component {
           <Route exact path='/' render={() => (
             <div></div>
           )} />
-          <Route path='/dashboard' render={() => (
+          <AuthenticatedRoute user={user} path='/dashboard' render={() => (
             <Dashboard user={user} />
           )} />
           <Route path='/sign-up' render={() => (
