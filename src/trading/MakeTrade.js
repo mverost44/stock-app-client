@@ -18,7 +18,9 @@ class MakeTrade extends Component {
       action: 'Buy',
       company: null,
       openTrades: [],
-      spinner: false
+      spinner: false,
+      isBuy: true,
+      accountBalance: ''
     }
   }
 
@@ -26,36 +28,38 @@ class MakeTrade extends Component {
   handleSubmit = event => {
     event.preventDefault()
 
-    // eslint-disable-next-line
-    const { tickerSymbol, entryPrice, size } = this.state
+    const { tickerSymbol, entryPrice, size, accountBalance } = this.state
     const { user } = this.props
 
     // Verify if form has been completely filled.
-    if (!size || !entryPrice) {
+    if ((!size || !entryPrice) || (size * entryPrice > accountBalance)) {
       return ''
     } else {
       // POST a trade, Show new trade + open trades, and clear form.
       createTrade(user, tickerSymbol, entryPrice, size)
-        .then(response => this.setState({ openTrades: [response.data.trade, ...this.state.openTrades] }))
+        .then(response => this.setState({ openTrades: [response.data, ...this.state.openTrades], accountBalance: response.data.account_balance }))
         .then(this.setState({ size: '', tickerSymbol: '', company: null, entryPrice: null }))
         .catch(console.error)
     }
   }
 
   // Set state to value of input field being changed
+  // .replace(/\+|-/, '')
   handleChange = event => {
     const updatedField = { [event.target.name]: event.target.value }
     this.setState(updatedField)
   }
 
-  // check if action is buy or short to set size as positive or negative
+  // Toggle positive/negative size when state of action is changed
+  // Toggle min/max attribute values of the size input to appropriately reflect the state of action
   handleActionChange = event => {
-    const { size } = this.state
+    const { size, isBuy } = this.state
     this.handleChange(event)
 
     this.setState(function () {
       return {
-        size: -size
+        size: -size,
+        isBuy: !isBuy
       }
     })
   }
@@ -86,13 +90,13 @@ class MakeTrade extends Component {
         'Authorization': `Token token=${user.token}`
       }
     })
-      .then(response => this.setState({ openTrades: response.data.trades }))
+      .then(response => this.setState({ openTrades: response.data.trades, accountBalance: response.data.account_balance }))
       .then(this.setState({ spinner: false }))
       .catch(console.error, this.setState({ spinner: false }))
   }
 
   render () {
-    const { openTrades, size, tickerSymbol, company, entryPrice, spinner } = this.state
+    const { openTrades, size, tickerSymbol, company, entryPrice, spinner, isBuy, accountBalance } = this.state
 
     // Loading Spinner
     const spin = (
@@ -123,11 +127,12 @@ class MakeTrade extends Component {
       <Fragment>
         {openTrades.map(trade => (
           <OpenTrades
-            key={trade.id}
+            key={Math.random()}
             id={trade.id}
             symbol={trade.ticker_symbol}
             entryPrice={trade.entry_price}
             entrySize={trade.entry_size}
+            accountBalance={accountBalance}
           />
         ))}
       </Fragment>
@@ -144,7 +149,17 @@ class MakeTrade extends Component {
           symbol={tickerSymbol}
           companyName={company}
           entryPrice={entryPrice}
+          isBuy={isBuy}
+          accountBalance={accountBalance}
         />
+      </Fragment>
+    )
+
+    const balance = (
+      <Fragment>
+        <nav className="navbar navbar-dark bg-dark sticky-top py-3 justify-content-center flex-md-nowrap">
+          <span className="pr-3 text-white">Account Balance: <span className="pl-3 text-success">${accountBalance}</span></span>
+        </nav>
       </Fragment>
     )
 
@@ -152,6 +167,7 @@ class MakeTrade extends Component {
     if (openTrades.length < 1) {
       return (
         <Fragment>
+          {balance}
           {tradeForm}
           {spinner ? spin : tradeHeading}
           {noTrades}
@@ -162,6 +178,7 @@ class MakeTrade extends Component {
     // Renders Trade Form and determines whether to show spinner or trade heading and open trade list
     return (
       <Fragment>
+        {balance}
         {tradeForm}
         {spinner ? spin : tradeHeading}
         {tradeList}

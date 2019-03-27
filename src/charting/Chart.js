@@ -1,26 +1,28 @@
-import React, { Component } from 'react'
+import React, { Component, Fragment } from 'react'
 // eslint-disable-next-line
 import { CanvasJS, CanvasJSChart } from './canvasjs.react'
-import Form from 'react-bootstrap/Form'
-import FormControl from 'react-bootstrap/FormControl'
-import InputGroup from 'react-bootstrap/InputGroup'
+
+import Form, { Col } from 'react-bootstrap/Form'
 import Button from 'react-bootstrap/Button'
+import './chart.scss'
 
 class Chart extends Component {
   constructor () {
     super()
     this.state = {
       dataPoints: [],
-      ticker_symbol: ''
+      tickerSymbol: '',
+      timeFrame: ''
     }
   }
 
 handleSubmit = event => {
+  const { tickerSymbol, timeFrame } = this.state
   event.preventDefault()
   this.setState({ dataPoints: [] })
 
   const chart = this.chart
-  const stockUrl = `https://cloud.iexapis.com/beta/stock/${this.state.ticker_symbol}/chart/1d?token=pk_1d307534ff3144d485a0da8430713ead`
+  const stockUrl = `https://cloud.iexapis.com/beta/stock/${tickerSymbol}/chart/${timeFrame}?token=pk_1d307534ff3144d485a0da8430713ead`
 
   fetch(stockUrl)
     .then(function (response) {
@@ -29,7 +31,7 @@ handleSubmit = event => {
     .then(data => {
       for (let i = 0; i < data.length; i++) {
         this.state.dataPoints.push({
-          label: data[i].minute,
+          label: data[i].minute || data[i].label,
           y: [
             data[i].open,
             data[i].high,
@@ -89,7 +91,7 @@ render () {
     },
     data: [{
       type: 'candlestick',
-      name: this.state.ticker_symbol,
+      name: this.state.tickerSymbol,
       showInLegend: true,
       yValueFormatString: '$##0.00',
       dataPoints: this.state.dataPoints
@@ -97,23 +99,41 @@ render () {
   }
 
   return (
-    <div>
-      <Form.Label>Search Stocks</Form.Label>
-      <InputGroup className="mb-3">
-        <FormControl
-          placeholder="Symbol"
-          name="ticker_symbol"
-          onChange={this.handleChange}
-        />
-        <InputGroup.Append>
-          <Button onClick={this.handleSubmit} variant="outline-secondary">Search</Button>
-        </InputGroup.Append>
-      </InputGroup>
-      <CanvasJSChart options = {options} onRef = {
+    <Fragment>
+      <Form.Row className="mb-3 ml-5">
+        <Form.Group as={Col}>
+          <Form.Label>Search Stocks</Form.Label>
+          <Form.Control
+            placeholder="Symbol"
+            name="tickerSymbol"
+            onChange={this.handleChange}
+          />
+        </Form.Group>
+
+        <Form.Group as={Col}>
+          <Form.Label>Time Frame</Form.Label>
+          <Form.Control onChange={this.handleChange} name="timeFrame" as="select" required>
+            <option>ytd</option>
+            <option>5y</option>
+            <option>2y</option>
+            <option>1y</option>
+            <option>6m</option>
+            <option>3m</option>
+            <option>1m</option>
+            <option>1d</option>
+          </Form.Control>
+        </Form.Group>
+        <Form.Group as={Col} className="align-self-end">
+          <Button onClick={this.handleSubmit} className="chart-btn" variant="outline-secondary">Search</Button>
+        </Form.Group>
+      </Form.Row>
+
+      <CanvasJSChart
+        options={options}
         // eslint-disable-next-line
-        ref => this.chart = ref}
+        onRef={ref => this.chart = ref}
       />
-    </div>
+    </Fragment>
   )
 }
 }

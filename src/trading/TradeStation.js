@@ -5,20 +5,6 @@ import ClosedTrades from './ClosedTrades'
 import { Route } from 'react-router-dom'
 
 class TradeStation extends Component {
-  constructor (props) {
-    super(props)
-    this.state = {
-      trade: {
-        ticker_symbol: '',
-        entry_price: '',
-        exit_price: '',
-        entry_size: '',
-        exit_size: '',
-        open: ''
-      }
-    }
-  }
-
   render () {
     return (
       <Fragment>

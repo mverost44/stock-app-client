@@ -36,13 +36,6 @@ class ClosedTrades extends Component {
     const { deleteTrade } = this
     const { spinner, closedTrades } = this.state
 
-    // if (this.props.location.updated) {
-    //   getClosedTrades(this.props.user)
-    //   .then(response => this.setState({ closedTrades: response.data.trades }))
-    //   .then(this.setState({ updated: false }))
-    //   .catch(console.error)
-    // }
-
     const tradeHeading = (
       <Fragment>
         <hr className="mx-4 mt-2"/>
@@ -81,7 +74,7 @@ class ClosedTrades extends Component {
         {spinner ? spin : tradeHeading}
         {closedTrades.map(trade => (
           <div className="card mx-2 mt-3" key={trade.id}>
-            <div className="card-header">Total Profit/Loss: <span className="lead">{trade.total_profit_loss}</span></div>
+            <div className="card-header">Total Profit/Loss: <span className="lead">{Number(trade.total_profit_loss).toFixed(2)}</span></div>
             <div className="card-body">
               <p className="lead">{trade.ticker_symbol}</p>
               <p className="card-text">Entry Price: {trade.entry_price}</p>

@@ -13,6 +13,7 @@ class OpenTrades extends Component {
   }
   render () {
     const { entryPrice, entrySize, symbol, id } = this.state
+    const { accountBalance } = this.props
 
     return (
       <Fragment>
@@ -24,7 +25,7 @@ class OpenTrades extends Component {
             <p className="card-text">Share Size: {entrySize}</p>
           </div>
           <div className="card-footer">
-            <Link to={{ pathname: '/dashboard/update-trade', state: symbol, id, entrySize }}><button className="btn btn-primary">Trade</button></Link>
+            <Link to={{ pathname: '/dashboard/update-trade', state: symbol, id, entrySize, accountBalance }}><button className="btn btn-primary">Trade</button></Link>
           </div>
         </div>
       </Fragment>

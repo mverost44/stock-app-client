@@ -19,7 +19,8 @@ class UpdateTrade extends Component {
       action: 'Sell',
       company: '',
       shouldRedirect: false,
-      spinner: false
+      spinner: false,
+      accountBalance: this.props.location.accountBalance
     }
   }
 
@@ -27,14 +28,13 @@ class UpdateTrade extends Component {
     event.preventDefault()
 
     // eslint-disable-next-line
-    const { exitPrice, size, id } = this.state
+    const { exitPrice, size, id, accountBalance } = this.state
     const { user } = this.props
 
-    if (!size || !exitPrice) {
+    if ((!size || !exitPrice) || size * exitPrice > accountBalance) {
       return ''
     } else {
       updateTrade(user, exitPrice, size, id)
-        .then(response => this.setState({ updatedTrade: response.trade }))
         .then(() => this.setState({ size: '', exitPrice: null }))
         .then(() => this.setState({ shouldRedirect: true }))
         .catch(console.error, this.setState({ size: '', exitPrice: null }))
@@ -42,7 +42,7 @@ class UpdateTrade extends Component {
   }
 
   handleChange = event => {
-    const updatedField = { [event.target.name]: event.target.value }
+    const updatedField = { [event.target.name]: event.target.value.replace(/\+|-/, '') }
     this.setState(updatedField)
   }
 
@@ -51,29 +51,39 @@ class UpdateTrade extends Component {
     const stockUrl = `https://cloud.iexapis.com/beta/stock/${this.state.symbol}/quote?token=pk_1d307534ff3144d485a0da8430713ead`
 
     fetch(stockUrl)
-      .then(function (response) {
-        return response.json()
-      })
+      .then(response => response.json())
       .then(data => this.setState({ exitPrice: data.latestPrice, company: data.companyName }))
       .catch(console.error)
   }
 
   render () {
     if (this.state.shouldRedirect) {
-      return <Redirect to={{ pathname: '/dashboard/closed-trades', props: { updated: true } }} />
+      return <Redirect to={{ pathname: '/dashboard/closed-trades' }} />
     }
+
+    const { symbol, company, exitPrice, size, maxSize, accountBalance } = this.state
+
+    const balance = (
+      <Fragment>
+        <nav className="navbar navbar-dark bg-dark sticky-top py-3 justify-content-center flex-md-nowrap">
+          <span className="pr-3 text-white">Account Balance: <span className="pl-3 text-success">${accountBalance}</span></span>
+        </nav>
+      </Fragment>
+    )
 
     return (
       <Fragment>
+        {balance}
         <UpdateForm
-          symbol={this.state.symbol}
+          symbol={symbol}
           handleChange={this.handleChange}
           handleSubmit={this.handleSubmit}
           confirmSymbol={this.confirmSymbol}
-          company={this.state.company}
-          exitPrice={this.state.exitPrice}
-          size={this.state.size}
-          maxSize={this.state.maxSize}
+          company={company}
+          exitPrice={exitPrice}
+          size={size}
+          maxSize={maxSize}
+          accountBalance={accountBalance}
         />
         <ClosedTrades user={this.props.user} />
       </Fragment>
